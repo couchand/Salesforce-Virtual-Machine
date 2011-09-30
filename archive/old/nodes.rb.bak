@@ -1,0 +1,46 @@
+module Apex
+  class IntegerLiteral < Treetop::Runtime::SyntaxNode
+  end
+
+  class StringLiteral < Treetop::Runtime::SyntaxNode
+  end
+
+  class Keyword < Treetop::Runtime::SyntaxNode
+    def self.include? val
+      ['string','integer'].include? val
+    end
+  end
+
+  class Variable < Treetop::Runtime::SyntaxNode
+    @@var_table = []
+
+    def self.include? val
+      @@var_table.include? val
+    end
+
+    def self.include_add? val
+      b = self.include? val
+      self.add val unless b
+      b
+    end
+
+    def self.add val
+      @@var_table.push val
+    end
+  end
+
+  class LiteralValue < Treetop::Runtime::SyntaxNode
+  end
+
+  class Value < Treetop::Runtime::SyntaxNode
+  end
+
+  class Declaration < Treetop::Runtime::SyntaxNode
+  end
+
+  class Identifier < Treetop::Runtime::SyntaxNode
+  end
+
+  class Assignment < Treetop::Runtime::SyntaxNode
+  end
+end

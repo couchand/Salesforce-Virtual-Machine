@@ -1,0 +1,270 @@
+grammar Apex
+
+  rule statement
+    expression space? ';' <Statement>
+  end
+
+  rule expression
+    declaration / assignment_expression / expression9
+  end
+
+  rule space
+    [\s]+
+  end
+
+  rule identifier
+    [_a-zA-Z] [\w]* <Identifier>
+  end
+
+  rule integer_literal
+    ('+' / '-')? [0-9]+ <IntegerLiteral>
+  end
+
+  rule string_literal
+    "'" string_value "'" <StringLiteral>
+  end
+
+  rule string_value
+    (!"'" . / "\\'")*
+  end
+
+  rule true_literal
+    'true' !([_a-zA-Z] .) <TrueLiteral>
+  end
+
+  rule false_literal
+    'false' !([_a-zA-Z] .) <FalseLiteral>
+  end
+
+  rule boolean_literal
+    true_literal / false_literal
+  end
+
+  rule null_literal
+    'null' !([_a-zA-Z] .) <NullLiteral>
+  end
+
+  rule literal
+    integer_literal / string_literal / boolean_literal / null_literal
+  end
+
+  rule assignment_expression
+    lvalue space? assignment_operator space? assignment_subexpression <AssignmentExpression>
+  end
+
+  rule assignment_subexpression
+    assignment_subexpression_assignment / expression9
+  end
+
+  rule assignment_subexpression_assignment
+    lvalue space? assignment_operator space? assignment_subexpression <AssignmentSubassignment>
+  end
+
+  rule lvalue
+    identifier
+  end
+
+  rule declaration
+    identifier space lvalue declaration_assignment? declaration_rest? <Declaration>
+  end
+
+  rule declaration_assignment
+    space? '=' space? assignment_subexpression <DeclarationAssignment>
+  end
+
+  rule declaration_rest
+    space? ',' space? lvalue declaration_assignment? declaration_rest? <DeclarationRest>
+  end
+
+  rule expression9
+    ternary_expression / expression8
+  end
+
+  rule expression8
+    logical_or_expression / expression7
+  end
+
+  rule expression7
+    logical_and_expression / expression6
+  end
+
+  rule expression6
+    equality_expression / expression5
+  end
+
+  rule expression5
+    inequality_expression / expression4
+  end
+
+  rule expression4
+    addition_expression / expression4b
+  end
+
+  rule expression4b
+    subtraction_expression / expression3
+  end
+
+  rule expression3
+    multiplication_expression / expression3b
+  end
+
+  rule expression3b
+    division_expression / expression2
+  end
+
+  rule expression2
+    invert_expression / negative_expression / expression1
+  end
+
+  rule expression1
+    prefix_expression / postfix_expression / primary
+  end
+
+  rule primary
+    parenthesized_expression / literal / identifier
+  end
+
+  rule parenthesized_expression
+    '(' space? expression space? ')' <ParenthesizedExpression>
+  end
+
+  rule prefix_expression
+    prefix_operator space? lvalue <PrefixExpression>
+  end
+
+  rule postfix_expression
+    lvalue space? postfix_operator <PostfixExpression>
+  end
+
+  rule invert_expression
+    invert_operator space? expression2 <UnaryExpression>
+  end
+
+  rule ternary_expression
+    expression8 space? '?' space? expression9 space? ':' space? expression9 <TernaryExpression>
+  end
+
+  rule logical_or_expression
+    expression7 space? '||' space? expression8 <LogicalOrExpression>
+  end
+
+  rule logical_and_expression
+    expression6 space? '&&' space? expression7 <LogicalAndExpression>
+  end
+
+  rule equality_expression
+    expression5 space? equality_operator space? expression5 <InfixExpression>
+  end
+
+  rule equality_operator
+    equals_operator / not_equals_operator
+  end
+
+  rule addition_expression
+    expression4b space? addition_operator space? expression4 <InfixExpression>
+  end
+
+  rule subtraction_expression
+    expression3 space? subtraction_operator space? expression3 <InfixExpression>
+  end
+
+  rule multiplication_expression
+    expression3b space? multiplication_operator space? expression3 <InfixExpression>
+  end
+
+  rule division_expression
+    expression2 space? division_operator space? expression2 <InfixExpression>
+  end
+
+  rule inequality_expression
+    expression4 space? inequality_operator space? expression4 <InfixExpression>
+  end
+
+  rule inequality_operator
+    greater_or_equals_operator / less_or_equals_operator / less_than_operator / greater_than_operator
+  end
+
+  rule negative_expression
+    negative_operator space? expression1 <UnaryExpression>
+  end
+
+  rule negative_operator
+    negation_operator / nullipotent_operator
+  end
+
+  rule negation_operator
+    '-' <NegationOperator>
+  end
+
+  rule nullipotent_operator
+    '+' <NullipotentOperator>
+  end
+
+  rule equals_operator
+    '==' <EqualsOperator>
+  end
+
+  rule not_equals_operator
+    '!=' <NotEqualsOperator>
+  end
+
+  rule addition_operator
+    '+' <AdditionOperator>
+  end
+
+  rule subtraction_operator
+    '-' <SubtractionOperator>
+  end
+
+  rule multiplication_operator
+    '*' <MultiplicationOperator>
+  end
+
+  rule division_operator
+    '/' <DivisionOperator>
+  end
+
+  rule less_than_operator
+    '<' <LessThanOperator>
+  end
+
+  rule greater_or_equals_operator
+    '>=' <GreaterOrEqualsOperator>
+  end
+
+  rule less_or_equals_operator
+    '<=' <LessOrEqualsOperator>
+  end
+
+  rule greater_than_operator
+    '>' <GreaterThanOperator>
+  end
+
+  rule invert_operator
+    '!' <InvertOperator>
+  end
+
+  rule assignment_operator
+    assignment_operator_kernel <AssignmentOperator>
+  end
+
+  rule assignment_operator_kernel
+    '=' / '+=' / '-=' / '*=' / '/=' / '%='
+  end
+
+  rule postfix_operator
+    increment / decrement
+  end
+
+  rule prefix_operator
+    increment / decrement
+  end
+
+  rule increment
+    '++' <IncrementOperator>
+  end
+
+  rule decrement
+    '--' <DecrementOperator>
+  end
+end

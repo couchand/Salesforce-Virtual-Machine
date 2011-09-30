@@ -1,0 +1,146 @@
+grammar Apex
+
+  rule expression
+    assignment_expression / expression1
+  end
+
+  rule space
+    [\s]+
+  end
+
+  rule identifier
+    [_a-zA-Z] [\w]* <Identifier>
+  end
+
+  rule integer_literal
+    ('+' / '-')? [0-9]+ <IntegerLiteral>
+  end
+
+  rule string_literal
+    "'" (!"'" . / "\\'")* "'" <StringLiteral>
+  end
+
+  rule true_literal
+    'true' !([_a-zA-Z] .) <TrueLiteral>
+  end
+
+  rule false_literal
+    'false' !([_a-zA-Z] .) <FalseLiteral>
+  end
+
+  rule boolean_literal
+    true_literal / false_literal
+  end
+
+  rule null_literal
+    'null' !([_a-zA-Z] .) <NullLiteral>
+  end
+
+  rule literal
+    integer_literal / string_literal / boolean_literal / null_literal
+  end
+
+  rule assignment_expression
+    lvalue space? assignment_operator space? assignment_subexpression <AssignmentExpression>
+  end
+
+  rule assignment_subexpression
+    assignment_subexpression_assignment / expression1
+  end
+
+  rule assignment_subexpression_assignment
+    identifier space? assignment_operator space? assignment_subexpression <AssignmentExpression>
+  end
+
+  rule lvalue
+    declaration / identifier
+  end
+
+  rule declaration
+    identifier space+ identifier <Declaration>
+  end
+
+  rule expression1
+    ternary_expression / expression2
+  end
+
+  rule ternary_expression
+    expression2 space? '?' space? expression1 space? ':' space? expression1 <TernaryExpression>
+  end
+
+  rule expression2
+    infix_expression / expression3
+  end
+
+  rule infix_expression
+    expression3 space? infix_operator space? expression2 <InfixExpression>
+  end
+
+  rule expression3
+    prefix_expression / postfix_expression / invert_expression / primary
+  end
+
+  rule primary
+    parenthesized_expression / literal / identifier
+  end
+
+  rule parenthesized_expression
+    '(' space? expression space? ')'
+  end
+
+  rule prefix_expression
+    prefix_operator space? lvalue <PrefixExpression>
+  end
+
+  rule invert_expression
+    '!' space? expression3 <InvertExpression>
+  end
+
+  rule postfix_expression
+    lvalue space? postfix_operator <PostfixExpression>
+  end
+
+  rule infix_operator
+    logical_or_operator / logical_and_operator / equals_operator / not_equals_operator
+  end
+
+  rule logical_or_operator
+    '||' <LogicalOrOperator>
+  end
+
+  rule logical_and_operator
+    '&&' <LogicalAndOperator>
+  end
+
+  rule equals_operator
+    '==' <EqualsOperator>
+  end
+
+  rule not_equals_operator
+    '!=' <NotEqualsOperator>
+  end
+
+  rule assignment_operator
+    assignment_operator_kernel <AssignmentOperator>
+  end
+
+  rule assignment_operator_kernel
+    '=' / '+=' / '-=' / '*=' / '/=' / '%='
+  end
+
+  rule postfix_operator
+    increment / decrement
+  end
+
+  rule prefix_operator
+    increment / decrement
+  end
+
+  rule increment
+    '++' <IncrementOperator>
+  end
+
+  rule decrement
+    '--' <DecrementOperator>
+  end
+end
