@@ -14,7 +14,7 @@ Intro
   Stick to statements that use Integer, String, and Boolean types (for now).
 
 Dependencies
--Ruby (some version)
+-Ruby (probably 1.8.something)
 -Gem (for Treetop)
 -Treetop (1.4.9)
 
