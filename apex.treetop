@@ -1,5 +1,89 @@
 grammar Apex
 
+  rule class_declaration
+    normal_class_declaration
+  end
+
+  rule normal_class_declaration
+    class_modifiers? 'class' space identifier space? class_body
+  end
+
+  rule class_modifiers
+    class_modifier space class_modifiers?
+  end
+
+  rule class_modifier
+    'public' / 'private' / 'global' / 'abstract'
+  end
+
+  rule class_body
+    '{' space? class_body_declarations space? '}'
+  end
+
+  rule class_body_declarations
+    class_body_declaration (space? class_body_declarations)?
+  end
+
+  rule class_body_declaration
+    field_declaration / method_declaration / static_block
+  end
+
+  rule field_declaration
+    field_modifiers? type_name space identifier field_initializer? space? ';'
+  end
+
+  rule field_initializer
+    space? '=' space? expression9
+  end
+
+  rule field_modifiers
+    field_modifier space field_modifiers?
+  end
+
+  rule field_modifier
+    'public' / 'private' / 'global' / 'final' / 'static' / 'transient'
+  end
+
+  rule type_name
+    identifier # or collection type...
+  end
+
+  rule method_declaration
+    method_header method_body
+  end
+
+  rule method_header
+    method_modifiers? typed_method_declarator
+  end
+
+  rule method_modifiers
+    method_modifier space method_modifiers?
+  end
+
+  rule method_modifier
+    'public' / 'private' / 'global' / 'static' / 'virtual' / 'override' / 'abstract'
+  end
+
+  rule typed_method_declarator
+    (type_name / 'void') space identifier space? '(' space? ')' # plus formal parameters!
+  end
+
+  rule method_body
+    block
+  end
+
+  rule block
+    '{'  space? block_statements space? '}'
+  end
+
+  rule block_statements
+    statement space? block_statements?
+  end
+
+  rule static_block
+    'static' space? block
+  end
+
   rule statement
     expression space? ';' <Statement>
   end
