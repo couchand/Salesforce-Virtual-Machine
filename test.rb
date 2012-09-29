@@ -1,4 +1,4 @@
-require 'parser.rb'
+require_relative 'parser.rb'
 
 p = Parser.load
 sc = Apex::Scope.new

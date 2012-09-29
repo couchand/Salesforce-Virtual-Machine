@@ -1,5 +1,5 @@
-require 'system.rb'
-require 'types.rb'
+require_relative 'system.rb'
+require_relative 'types.rb'
 
 module Apex
   class IntegerLiteral < Treetop::Runtime::SyntaxNode

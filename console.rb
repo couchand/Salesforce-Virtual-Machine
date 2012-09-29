@@ -1,4 +1,4 @@
-require 'parser.rb'
+require_relative 'parser.rb'
 
 devmode = false
 p = Parser.load
