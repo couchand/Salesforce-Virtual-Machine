@@ -1,6 +1,9 @@
 require_relative 'parser.rb'
 
 devmode = false
+
+puts 'SFVM Apex Console'
+
 p = Parser.load
 sc = Apex::Scope.new
 
@@ -9,14 +12,14 @@ loop do
 
   statement = readline.chomp.strip.downcase
 
-  break if statement.start_with? "quit"
+  break if statement.start_with? "quit" or statement.start_with? "exit"
 
   while !statement.end_with? ';'
 
     print '  '
 
     next_line = readline.chomp.strip.downcase
-    break if next_line.start_with? "quit"
+    break if next_line.start_with? "quit" or statement.start_with? "exit"
 
     statement += ' ' + next_line
 
