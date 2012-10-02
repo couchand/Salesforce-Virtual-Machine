@@ -188,11 +188,40 @@ module Apex
     def then_block
       elements[1]
     end
+
+    def value( scope )
+      if if_condition( scope )
+      then
+        then_do( scope )
+      end
+    end
+
+    def if_condition( scope )
+      v = condition.value( scope )
+      true == v.value
+    end
+
+    def then_do( scope )
+      then_block.value( scope )
+    end
   end
 
   class IfThenElseStatement < IfThenStatement
+    def value( scope )
+      if if_condition( scope )
+      then
+        then_do( scope )
+      else
+        else_do( scope )
+      end
+    end
+
     def else_block
       elements[2]
+    end
+
+    def else_do( scope )
+      else_block.value( scope )
     end
   end
 
@@ -200,11 +229,21 @@ module Apex
     def statements
       elements[0].elements
     end
+
+    def value( scope )
+      statements.each do |statement|
+        statement.value( scope )
+      end
+    end
   end
 
   class ExpressionStatement < Treetop::Runtime::SyntaxNode
     def expression
       elements[0]
+    end
+
+    def value scope
+      expression.value scope
     end
   end
 
