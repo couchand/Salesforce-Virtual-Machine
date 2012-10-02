@@ -19,13 +19,17 @@ module Apex
       new_scope
     end
 
+    def has_parent?
+      !@parent.nil?
+    end
+
     def contains?( name )
-      @containers.has_key? name or (!@parent.nil? and @parent.contains? name)
+      @containers.has_key? name or (has_parent? and @parent.contains? name)
     end
 
     def get( name )
 #      puts "get #{name} from #{caller[0]}"
-      g_type( name ) or g_var( name ) or (@parent.nil? ? nil : @parent.get( name ))
+      g_type( name ) or g_var( name ) or (has_parent? ? @parent.get( name ) : nil)
     end
 
     def declare( name, type )
@@ -36,7 +40,7 @@ module Apex
 
     def set_var( name, value )
       raise "TypeError" unless value.is_a? @containers[name]
-      if (!@parent.nil? and @parent.contains? name)
+      if (has_parent? and @parent.contains? name)
       then
         @parent.set_var( name, value )
       else
@@ -45,7 +49,7 @@ module Apex
     end
 
     def get_var( name )
-      raise "UnknownVar" unless (contains? name or (!@parent.nil? and @parent.contains? name))
+      raise "UnknownVar" unless (contains? name or (has_parent? and @parent.contains? name))
       g_var( name ) or @parent.get_var( name )
     end
 
