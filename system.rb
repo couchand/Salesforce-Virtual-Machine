@@ -4,27 +4,28 @@ module Apex
       @containers = {}
       @vars = {}
       @types = { 'integer' => ApexInteger, 'boolean' => ApexBoolean, 'string' => ApexString }
+      @parent = nil
     end
 
-    def setup( c, v, t )
+    def setup( c, t, p )
       @containers = c.clone
-      @vars = v.clone
       @types = t.clone
+      @parent = p
     end
 
     def local_copy
       new_scope = Scope.new
-      new_scope.setup @containers, @vars, @types
+      new_scope.setup @containers, @types, self
       new_scope
     end
 
     def contains?( name )
-      @containers.has_key? name
+      @containers.has_key? name or (!@parent.nil? and @parent.contains? name)
     end
 
     def get( name )
 #      puts "get #{name} from #{caller[0]}"
-      g_type( name ) || g_var( name )
+      g_type( name ) or g_var( name ) or (@parent.nil? ? nil : @parent.get( name ))
     end
 
     def declare( name, type )
@@ -35,12 +36,17 @@ module Apex
 
     def set_var( name, value )
       raise "TypeError" unless value.is_a? @containers[name]
-      @vars[name] = value
+      if (!@parent.nil? and @parent.contains? name)
+      then
+        @parent.set_var( name, value )
+      else
+        @vars[name] = value
+      end
     end
 
     def get_var( name )
-      raise "UnknownVar" unless @vars.has_key? name
-      g_var( name )
+      raise "UnknownVar" unless (contains? name or (!@parent.nil? and @parent.contains? name))
+      g_var( name ) or @parent.get_var( name )
     end
 
     def set_type( name, value )
