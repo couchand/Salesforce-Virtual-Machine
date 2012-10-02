@@ -239,20 +239,28 @@ module Apex
        while condition.value( scope ).value do
          v = do_block.value( scope.local_copy )
        end
+       v
     end
   end
 
   class Block < Treetop::Runtime::SyntaxNode
-    def statements
-      elements[0].elements
+    def has_more?
+      elements[0].elements.size > 1
+    end
+
+    def statement
+      elements[0].elements[0]
+    end
+
+    def more
+      elements[0].elements[1].elements[0].elements[0]
     end
 
     def value( scope )
-      v = nil
-      statements.each do |statement|
-        v = statement.value( scope )
+      statement.value( scope )
+      if has_more? then
+        more.value( scope )
       end
-      v
     end
   end
 
