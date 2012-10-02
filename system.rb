@@ -29,7 +29,8 @@ module Apex
 
     def get( name )
 #      puts "get #{name} from #{caller[0]}"
-      g_type( name ) or g_var( name ) or (has_parent? ? @parent.get( name ) : nil)
+      v = g_type( name ) or g_var( name ) or (has_parent? ? @parent.get( name ) : nil)
+      raise "Unknown Identifier: #{name}" if v.nil?
     end
 
     def declare( name, type )
