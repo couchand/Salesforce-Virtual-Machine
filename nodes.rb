@@ -180,7 +180,19 @@ module Apex
     end
   end
 
-  class Statement < Treetop::Runtime::SyntaxNode
+  class IfThenStatement < Treetop::Runtime::SyntaxNode
+
+  end
+
+  class IfThenElseStatement < Treetop::Runtime::SyntaxNode
+
+  end
+
+  class Block < Treetop::Runtime::SyntaxNode
+
+  end
+
+  class ExpressionStatement < Treetop::Runtime::SyntaxNode
     def expression
       elements[0]
     end

@@ -1,19 +1,31 @@
 grammar Apex
 
   rule statement
-    plain_statement
+    plain_statement / if_then_else_statement / if_then_statement #/ while_statement / for_statement
+  end
+
+  rule block
+    statement / curly_braced_block
+  end
+
+  rule curly_braced_block
+    '{'  space? block_statements space? '}' <Block>
+  end
+
+  rule block_statements
+    statement (space? block_statements)?
+  end
+
+  rule if_then_statement
+    'if' space? '(' space? expression9 space? ')' space? block <IfThenStatement>
+  end
+
+  rule if_then_else_statement
+    'if' space? '(' space? expression9 space? ')' space? block space? 'else' space? block <IfThenElseStatement>
   end
 
   rule plain_statement
-    expression_statement / break_statement / continue_statement
-  end
-
-  rule break_statement
-    'break' semicolon
-  end
-
-  rule continue_statement
-    'continue' semicolon
+    expression_statement# / break_statement / continue_statement
   end
 
   rule semicolon
@@ -21,7 +33,7 @@ grammar Apex
   end
 
   rule expression_statement
-    expression semicolon <Statement>
+    expression semicolon <ExpressionStatement>
   end
 
   rule expression
