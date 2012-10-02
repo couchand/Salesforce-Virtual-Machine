@@ -231,9 +231,11 @@ module Apex
     end
 
     def value( scope )
+      v = nil
       statements.each do |statement|
-        statement.value( scope )
+        v = statement.value( scope )
       end
+      v
     end
   end
 
