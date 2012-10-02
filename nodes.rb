@@ -225,6 +225,16 @@ module Apex
     end
   end
 
+  class WhileStatement < Treetop::Runtime::SyntaxNode
+    def condition
+      elements[0]
+    end
+
+    def do_block
+      elements[1]
+    end
+  end
+
   class Block < Treetop::Runtime::SyntaxNode
     def statements
       elements[0].elements

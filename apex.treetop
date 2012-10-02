@@ -1,7 +1,7 @@
 grammar Apex
 
   rule statement
-    plain_statement / if_then_else_statement / if_then_statement #/ while_statement / for_statement
+    plain_statement / if_then_else_statement / if_then_statement / while_statement #/ for_statement
   end
 
   rule block
@@ -22,6 +22,10 @@ grammar Apex
 
   rule if_then_else_statement
     'if' space? '(' space? expression9 space? ')' space? block space? 'else' space? block <IfThenElseStatement>
+  end
+
+  rule while_statement
+    'while' space? '(' space? expression9 space? ')' space? block <WhileStatement>
   end
 
   rule plain_statement
