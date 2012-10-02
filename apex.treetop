@@ -1,7 +1,27 @@
 grammar Apex
 
   rule statement
-    expression space? ';' <Statement>
+    plain_statement
+  end
+
+  rule plain_statement
+    expression_statement / break_statement / continue_statement
+  end
+
+  rule break_statement
+    'break' semicolon
+  end
+
+  rule continue_statement
+    'continue' semicolon
+  end
+
+  rule semicolon
+    space? ';'
+  end
+
+  rule expression_statement
+    expression semicolon <Statement>
   end
 
   rule expression
