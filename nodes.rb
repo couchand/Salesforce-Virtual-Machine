@@ -198,7 +198,7 @@ module Apex
 
     def if_condition( scope )
       v = condition.value( scope )
-      true == v.value
+      v.is_a? ApexBoolean and v.value
     end
 
     def then_do( scope )
