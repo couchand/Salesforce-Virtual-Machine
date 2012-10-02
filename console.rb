@@ -14,7 +14,7 @@ loop do
 
   break if statement.start_with? "quit" or statement.start_with? "exit"
 
-  while !statement.end_with? ';'
+  while !( statement.end_with? ';' or statement.end_with? '}' )
 
     print '  '
 
@@ -30,7 +30,7 @@ loop do
 
   begin
     local_scope = sc.local_copy
-    o = t.expression.value local_scope
+    o = t.value local_scope
     v = o.value
 
     sc = local_scope
