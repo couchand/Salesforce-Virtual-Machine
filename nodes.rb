@@ -197,12 +197,12 @@ module Apex
     end
 
     def if_condition( scope )
-      v = condition.value( scope )
+      v = condition.value( scope.local_copy )
       v.is_a? ApexBoolean and v.value
     end
 
     def then_do( scope )
-      then_block.value( scope )
+      then_block.value( scope.local_copy )
     end
   end
 
@@ -221,7 +221,7 @@ module Apex
     end
 
     def else_do( scope )
-      else_block.value( scope )
+      else_block.value( scope.local_copy )
     end
   end
 
@@ -232,6 +232,13 @@ module Apex
 
     def do_block
       elements[1]
+    end
+
+    def value( scope )
+       v = nil
+       while condition.value( scope ).value do
+         v = do_block.value( scope.local_copy )
+       end
     end
   end
 
