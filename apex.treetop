@@ -28,12 +28,8 @@ grammar Apex
     expression_statement# / break_statement / continue_statement
   end
 
-  rule semicolon
-    space? ';'
-  end
-
   rule expression_statement
-    expression semicolon <ExpressionStatement>
+    expression space? ';' <ExpressionStatement>
   end
 
   rule expression

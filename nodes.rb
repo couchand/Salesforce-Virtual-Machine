@@ -181,15 +181,25 @@ module Apex
   end
 
   class IfThenStatement < Treetop::Runtime::SyntaxNode
+    def condition
+      elements[0]
+    end
 
+    def then_block
+      elements[1]
+    end
   end
 
-  class IfThenElseStatement < Treetop::Runtime::SyntaxNode
-
+  class IfThenElseStatement < IfThenStatement
+    def else_block
+      elements[2]
+    end
   end
 
   class Block < Treetop::Runtime::SyntaxNode
-
+    def statements
+      elements[0].elements
+    end
   end
 
   class ExpressionStatement < Treetop::Runtime::SyntaxNode
