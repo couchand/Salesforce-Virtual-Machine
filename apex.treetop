@@ -13,7 +13,7 @@ grammar Apex
   end
 
   rule block_statements
-    statement (space? block_statements)?
+    statement space? block_statements <BlockStatements> / statement
   end
 
   rule if_then_statement

@@ -244,16 +244,26 @@ module Apex
   end
 
   class Block < Treetop::Runtime::SyntaxNode
+    def statements
+      elements[0]
+    end
+
+    def value( scope )
+      statements.value( scope )
+    end
+  end
+
+  class BlockStatements < Treetop::Runtime::SyntaxNode
     def has_more?
-      elements[0].elements.size > 1
+      elements.size > 1
     end
 
     def statement
-      elements[0].elements[0]
+      elements[0]
     end
 
     def more
-      elements[0].elements[1].elements[0].elements[0]
+      elements[1]
     end
 
     def value( scope )
